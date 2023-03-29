@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package v1;
+
+option go_package="./;account";
+
+enum TxType {
+  INCOME = 0;
+  EXPENDITURE = 1;
+}
+message Tx {
+  string _id = 1;
+  TxType tx_type = 2;
+  int64 amount = 3;
+  int64 payment_id = 4;
+  string made_at = 5;
+  string remark = 6;
+  string category_id = 7;
+}
+enum PayType {
+  CASH = 0;
+  TRANSFER = 1;
+}
+enum AccountAction {
+  RECEIVE_PAY = 0;
+  PAY = 1;
+  RECEIVE_DEPOSIT = 2;
+  DEPOSIT_WITHDRAWAL = 3;
+  REGISTER_CREDIT = 4;
+  REDEEM_CREDIT = 5;
+}
+message Payment {
+  string _id = 1;
+  PayType pay_type = 2;
+  TxType tx_type = 3;
+  AccountAction action = 4;
+  string person_id = 5;
+  repeated string txIds = 6;
+  int64 total_amount = 7;
+}
