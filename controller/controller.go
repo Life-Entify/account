@@ -1,9 +1,9 @@
 package account
 
 import (
-	config "github.com/life-entify/person/config"
-	repo "github.com/life-entify/person/repository"
-	db "github.com/life-entify/person/repository/db"
+	config "github.com/life-entify/account/config"
+	repo "github.com/life-entify/account/repository"
+	db "github.com/life-entify/account/repository/db/mongo"
 )
 
 type Controller struct {

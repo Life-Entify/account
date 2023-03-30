@@ -16,7 +16,7 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-func JSONToStruct(value interface{}, out any) error {
+func ToJSONStruct(value interface{}, out any) error {
 	valueByte, err := json.Marshal(value)
 	if err != nil {
 		return err

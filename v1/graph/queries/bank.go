@@ -2,15 +2,16 @@ package account
 
 import (
 	"github.com/graphql-go/graphql"
+	bank "github.com/life-entify/account/v1/graph/schemas/bank"
 )
 
-func GetPersons(resolver graphql.FieldResolveFn) *graphql.Field {
+func GetBanks(resolver graphql.FieldResolveFn) *graphql.Field {
 	return &graphql.Field{
-		Description: "Get Persons with search keyword",
-		Type:        graphql.NewList(graphql.String),
+		Description: "Get Banks with search keyword",
+		Type:        graphql.NewList(bank.BankType),
 		Args: graphql.FieldConfigArgument{
 			"keyword": &graphql.ArgumentConfig{
-				Type: graphql.String,
+				Type: bank.BankInputType,
 			},
 			"limit": &graphql.ArgumentConfig{
 				Type: graphql.Int,
@@ -22,10 +23,10 @@ func GetPersons(resolver graphql.FieldResolveFn) *graphql.Field {
 		Resolve: resolver,
 	}
 }
-func GetPersonsByID(resolver graphql.FieldResolveFn) *graphql.Field {
+func GetBanksByID(resolver graphql.FieldResolveFn) *graphql.Field {
 	return &graphql.Field{
-		Description: "Get Persons with search keyword",
-		Type:        graphql.String,
+		Description: "Get Banks with search keyword",
+		Type:        bank.BankType,
 		Args: graphql.FieldConfigArgument{
 			"_ids": &graphql.ArgumentConfig{
 				Type: graphql.NewList(graphql.String),

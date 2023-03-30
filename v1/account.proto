@@ -4,6 +4,16 @@ package v1;
 
 option go_package="./;account";
 
+message Bank {
+  string _id = 1;
+  string bank = 2;
+  string name = 3;
+  string number = 4;
+  string branch = 5;
+  string description = 6;
+  string is_admin = 7;
+  string active = 8;
+}
 enum TxType {
   INCOME = 0;
   EXPENDITURE = 1;
