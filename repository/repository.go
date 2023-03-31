@@ -10,6 +10,18 @@ import (
 )
 
 type Repository interface {
+	UpdatePayrollAction(ctx context.Context, _id primitive.ObjectID, payrollAction *account.PayrollAction) (*account.PayrollAction, error)
+	DeletePayrollAction(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
+	GetPayrollActions(ctx context.Context, filterObj *account.PayrollAction, page *db.Pagination) ([]*account.PayrollAction, error)
+	CreatePayrollAction(ctx context.Context, payrollAction *account.PayrollAction) (*account.PayrollAction, error)
+	ConnectPayrollAction() (*mongo.Client, *mongo.Collection)
+
+	UpdateCheque(ctx context.Context, _id primitive.ObjectID, check *account.Cheque) (*account.Cheque, error)
+	DeleteCheque(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
+	GetCheques(ctx context.Context, filterObj *account.Cheque, page *db.Pagination) ([]*account.Cheque, error)
+	CreateCheque(ctx context.Context, check *account.Cheque) (*account.Cheque, error)
+	ConnectCheque() (*mongo.Client, *mongo.Collection)
+
 	UpdateBankTx(ctx context.Context, _id primitive.ObjectID, bank *account.BankTx) (*account.BankTx, error)
 	DeleteBankTx(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
 	GetBankTxs(ctx context.Context, filterObj *account.BankTx, page *db.Pagination) ([]*account.BankTx, error)

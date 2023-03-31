@@ -4,6 +4,32 @@ package v1;
 
 option go_package="./;account";
 
+message PayrollAction {
+  string _id = 1;
+  string name = 2;
+  string description = 3;
+  string active = 4;
+  string is_general = 5;
+  repeated string employee_ids = 6;
+  string action_type = 7;
+  string action_kind = 8;
+  int64 amount = 9;
+  int64 repeats = 10;
+  string is_constant = 11;
+  int64 count = 12;
+  int64 total_value = 13;
+}
+
+message Cheque {
+  string _id = 1;
+  string cheque_number = 2;
+  int64 cheque_leaflets = 3;
+  string bank_id = 4;
+  string description = 5;
+  int64 used_leaflets = 6;
+  string created_at = 7;
+  Bank bank = 8;
+}
 message Bank {
   string _id = 1;
   string bank = 2;
