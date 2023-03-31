@@ -14,6 +14,19 @@ message Bank {
   string is_admin = 7;
   string active = 8;
 }
+
+message BankTx {
+  string _id = 1;
+  string tx_type = 2;
+  string bank_id = 3;
+  int64 amount = 4;
+  string description = 5;
+  string payment_type = 6;
+  string created_at = 7;
+  string employee_id = 8;
+
+  Bank bank = 9;
+}
 enum TxType {
   INCOME = 0;
   EXPENDITURE = 1;

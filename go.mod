@@ -4,7 +4,6 @@ go 1.18
 
 require (
 	github.com/graphql-go/graphql v0.8.0
-	github.com/life-entify/person v0.0.0-20230222091205-242acd4bf770
 	go.mongodb.org/mongo-driver v1.11.2
 	golang.org/x/crypto v0.6.0
 	google.golang.org/protobuf v1.28.1
@@ -12,6 +11,7 @@ require (
 
 require (
 	github.com/golang/snappy v0.0.1 // indirect
+	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
 	github.com/pkg/errors v0.9.1 // indirect
