@@ -14,7 +14,7 @@ var PayrollActionInputType = graphql.NewInputObject(graphql.InputObjectConfig{
 			Type: graphql.String,
 		},
 		"description": &graphql.InputObjectFieldConfig{
-			Type: graphql.Int,
+			Type: graphql.String,
 		},
 		"active": &graphql.InputObjectFieldConfig{
 			Type: graphql.String,

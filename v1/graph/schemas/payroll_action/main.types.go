@@ -14,7 +14,7 @@ var PayrollActionType = graphql.NewObject(graphql.ObjectConfig{
 			Type: graphql.String,
 		},
 		"description": &graphql.Field{
-			Type: graphql.Int,
+			Type: graphql.String,
 		},
 		"active": &graphql.Field{
 			Type: graphql.String,
