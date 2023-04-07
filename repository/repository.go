@@ -16,10 +16,16 @@ type Repository interface {
 	CreatePayrollAction(ctx context.Context, payrollAction *account.PayrollAction) (*account.PayrollAction, error)
 	ConnectPayrollAction() (*mongo.Client, *mongo.Collection)
 
-	UpdateCheque(ctx context.Context, _id primitive.ObjectID, check *account.Cheque) (*account.Cheque, error)
+	UpdatePayment(ctx context.Context, _id primitive.ObjectID, payment *account.Payment) (*account.Payment, error)
+	DeletePayment(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
+	GetPayments(ctx context.Context, filterObj *account.Payment, page *db.Pagination) ([]*account.Payment, error)
+	CreatePayment(ctx context.Context, payment *account.Payment) (*account.Payment, error)
+	ConnectPayment() (*mongo.Client, *mongo.Collection)
+
+	UpdateCheque(ctx context.Context, _id primitive.ObjectID, cheque *account.Cheque) (*account.Cheque, error)
 	DeleteCheque(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
 	GetCheques(ctx context.Context, filterObj *account.Cheque, page *db.Pagination) ([]*account.Cheque, error)
-	CreateCheque(ctx context.Context, check *account.Cheque) (*account.Cheque, error)
+	CreateCheque(ctx context.Context, cheque *account.Cheque) (*account.Cheque, error)
 	ConnectCheque() (*mongo.Client, *mongo.Collection)
 
 	UpdateBankTx(ctx context.Context, _id primitive.ObjectID, bank *account.BankTx) (*account.BankTx, error)

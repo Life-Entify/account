@@ -4,6 +4,20 @@ package v1;
 
 option go_package="./;account";
 
+message Payment {
+  string _id = 1;
+  string pay_type = 2;
+  string tx_type = 3;
+  string action = 4;
+  string description = 5;
+  int64 person_id = 6;
+  int64 employee_id = 7;
+  repeated string tx_ids = 8;
+  int64 total_amount = 9;
+  string created_at = 10;
+  string unresolved = 11;
+}
+
 message PayrollAction {
   string _id = 1;
   string name = 2;
@@ -66,10 +80,6 @@ message Tx {
   string remark = 6;
   string category_id = 7;
 }
-enum PayType {
-  CASH = 0;
-  TRANSFER = 1;
-}
 enum AccountAction {
   RECEIVE_PAY = 0;
   PAY = 1;
@@ -77,13 +87,4 @@ enum AccountAction {
   DEPOSIT_WITHDRAWAL = 3;
   REGISTER_CREDIT = 4;
   REDEEM_CREDIT = 5;
-}
-message Payment {
-  string _id = 1;
-  PayType pay_type = 2;
-  TxType tx_type = 3;
-  AccountAction action = 4;
-  string person_id = 5;
-  repeated string txIds = 6;
-  int64 total_amount = 7;
 }
