@@ -71,13 +71,14 @@ enum TxType {
   INCOME = 0;
   EXPENDITURE = 1;
 }
-message Tx {
+
+message Transaction {
   string _id = 1;
-  TxType tx_type = 2;
+  string tx_type = 2;
   int64 amount = 3;
   int64 payment_id = 4;
-  string made_at = 5;
-  string remark = 6;
+  string remark = 5;
+  string created_at = 6;
   string category_id = 7;
 }
 enum AccountAction {

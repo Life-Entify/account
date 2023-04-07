@@ -15,40 +15,40 @@ import (
 )
 
 const (
-	PAYMENT_COLLECTION = "payments"
+	TX_COLLECTION = "transactions"
 )
 
-func (db *MongoDB) ConnectPayment() (*mongo.Client, *mongo.Collection) {
+func (db *MongoDB) ConnectTransaction() (*mongo.Client, *mongo.Collection) {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(db.uri))
 	if err != nil {
 		panic(err)
 	}
-	collection := client.Database(db.database).Collection(PAYMENT_COLLECTION, &options.CollectionOptions{})
+	collection := client.Database(db.database).Collection(TX_COLLECTION, &options.CollectionOptions{})
 	return client, collection
 }
-func (db *MongoDB) UpdatePayment(ctx context.Context, _id primitive.ObjectID, payment *account.Payment) (*account.Payment, error) {
-	client, coll := db.ConnectPayment()
+func (db *MongoDB) UpdateTransaction(ctx context.Context, _id primitive.ObjectID, transaction *account.Transaction) (*account.Transaction, error) {
+	client, coll := db.ConnectTransaction()
 	defer MongoDisconnect(client)
 
-	var jsonPayment bson.M
-	common.ToJSONStruct(payment, &jsonPayment)
-	_, err := coll.UpdateOne(ctx, bson.M{"_id": _id}, bson.M{"$set": jsonPayment})
+	var jsonTransaction bson.M
+	common.ToJSONStruct(transaction, &jsonTransaction)
+	_, err := coll.UpdateOne(ctx, bson.M{"_id": _id}, bson.M{"$set": jsonTransaction})
 	if err != nil {
 		return nil, errors.Errorf(err.Error())
 	}
 	var (
-		result     bson.M
-		newPayment account.Payment
+		result         bson.M
+		newTransaction account.Transaction
 	)
 	coll.FindOne(ctx, bson.M{"_id": _id}).Decode(&result)
 	if err != nil {
 		return nil, errors.Errorf(err.Error())
 	}
-	common.ToJSONStruct(result, &newPayment)
-	return &newPayment, nil
+	common.ToJSONStruct(result, &newTransaction)
+	return &newTransaction, nil
 }
-func (db *MongoDB) DeletePayment(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error) {
-	client, coll := db.ConnectPayment()
+func (db *MongoDB) DeleteTransaction(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error) {
+	client, coll := db.ConnectTransaction()
 	defer MongoDisconnect(client)
 	deleteResult, err := coll.DeleteOne(ctx, bson.M{"_id": _id})
 	if err != nil {
@@ -56,8 +56,8 @@ func (db *MongoDB) DeletePayment(ctx context.Context, _id primitive.ObjectID) (*
 	}
 	return deleteResult, nil
 }
-func (db *MongoDB) GetPayments(ctx context.Context, filterObj *account.Payment, page *db.Pagination) ([]*account.Payment, error) {
-	client, coll := db.ConnectPayment()
+func (db *MongoDB) GetTransactions(ctx context.Context, filterObj *account.Transaction, page *db.Pagination) ([]*account.Transaction, error) {
+	client, coll := db.ConnectTransaction()
 	defer MongoDisconnect(client)
 	option := options.Find().SetSort(bson.D{{Key: "_id", Value: 1}})
 	if !reflect.ValueOf(page).IsZero() {
@@ -79,52 +79,46 @@ func (db *MongoDB) GetPayments(ctx context.Context, filterObj *account.Payment, 
 			filterItems = append(filterItems, bson.M{"_id": id})
 		}
 
-		if filterObj.PersonId != 0 {
-			filterItems = append(filterItems, bson.M{"person_id": filterObj.PersonId})
+		if filterObj.PaymentId != 0 {
+			filterItems = append(filterItems, bson.M{"payment_id": filterObj.PaymentId})
 		}
-		if filterObj.PayType != "" {
-			filterItems = append(filterItems, bson.M{"pay_type": filterObj.PayType})
+		if filterObj.CategoryId != "" {
+			filterItems = append(filterItems, bson.M{"category_id": filterObj.CategoryId})
 		}
 		if filterObj.TxType != "" {
 			filterItems = append(filterItems, bson.M{"tx_type": filterObj.TxType})
-		}
-		if filterObj.Unresolved != "" {
-			filterItems = append(filterItems, bson.M{"unresolved": filterObj.Unresolved})
-		}
-		if filterObj.EmployeeId != 0 {
-			filterItems = append(filterItems, bson.M{"employee_id": filterObj.EmployeeId})
 		}
 		if len(filterItems) > 0 {
 			filter["$or"] = filterItems
 		}
 	}
 	var (
-		payments    []*account.Payment
-		jsonPayment []*bson.M
+		transactions    []*account.Transaction
+		jsonTransaction []*bson.M
 	)
 	cursor, err := coll.Find(ctx, filter, option)
 	if err != nil {
 		return nil, errors.Errorf(err.Error())
 	}
 	defer cursor.Close(ctx)
-	if err := cursor.All(ctx, &jsonPayment); err != nil {
+	if err := cursor.All(ctx, &jsonTransaction); err != nil {
 		if err != nil {
 			return nil, errors.Errorf(err.Error())
 		}
 	}
-	common.ToJSONStruct(jsonPayment, &payments)
-	return payments, nil
+	common.ToJSONStruct(jsonTransaction, &transactions)
+	return transactions, nil
 }
-func (db *MongoDB) CreatePayment(ctx context.Context, payment *account.Payment) (*account.Payment, error) {
-	client, coll := db.ConnectPayment()
+func (db *MongoDB) CreateTransaction(ctx context.Context, transaction *account.Transaction) (*account.Transaction, error) {
+	client, coll := db.ConnectTransaction()
 	defer MongoDisconnect(client)
 	var (
-		jsonPayment interface{}
-		result      bson.M
-		newPayment  account.Payment
+		jsonTransaction interface{}
+		result          bson.M
+		newTransaction  account.Transaction
 	)
-	common.ToJSONStruct(payment, &jsonPayment)
-	insertResult, err := coll.InsertOne(ctx, jsonPayment)
+	common.ToJSONStruct(transaction, &jsonTransaction)
+	insertResult, err := coll.InsertOne(ctx, jsonTransaction)
 	if err != nil {
 		return nil, errors.Errorf(err.Error())
 	}
@@ -132,6 +126,6 @@ func (db *MongoDB) CreatePayment(ctx context.Context, payment *account.Payment) 
 	if err != nil {
 		return nil, errors.Errorf(err.Error())
 	}
-	common.ToJSONStruct(result, &newPayment)
-	return &newPayment, nil
+	common.ToJSONStruct(result, &newTransaction)
+	return &newTransaction, nil
 }
