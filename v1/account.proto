@@ -4,6 +4,13 @@ package v1;
 
 option go_package="./;account";
 
+message PaymentCategory {
+  string _id = 1;
+  string title = 2;
+  string type = 3;
+  string description = 4;
+}
+
 message Payment {
   string _id = 1;
   string pay_type = 2;

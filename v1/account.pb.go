@@ -124,6 +124,77 @@ func (AccountAction) EnumDescriptor() ([]byte, []int) {
 	return file_v1_account_proto_rawDescGZIP(), []int{1}
 }
 
+type PaymentCategory struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	XId         string `protobuf:"bytes,1,opt,name=_id,json=Id,proto3" json:"_id,omitempty"`
+	Title       string `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Type        string `protobuf:"bytes,3,opt,name=type,proto3" json:"type,omitempty"`
+	Description string `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+}
+
+func (x *PaymentCategory) Reset() {
+	*x = PaymentCategory{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_v1_account_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PaymentCategory) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PaymentCategory) ProtoMessage() {}
+
+func (x *PaymentCategory) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_account_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PaymentCategory.ProtoReflect.Descriptor instead.
+func (*PaymentCategory) Descriptor() ([]byte, []int) {
+	return file_v1_account_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *PaymentCategory) GetXId() string {
+	if x != nil {
+		return x.XId
+	}
+	return ""
+}
+
+func (x *PaymentCategory) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *PaymentCategory) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *PaymentCategory) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
 type Payment struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -145,7 +216,7 @@ type Payment struct {
 func (x *Payment) Reset() {
 	*x = Payment{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_v1_account_proto_msgTypes[0]
+		mi := &file_v1_account_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -158,7 +229,7 @@ func (x *Payment) String() string {
 func (*Payment) ProtoMessage() {}
 
 func (x *Payment) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_account_proto_msgTypes[0]
+	mi := &file_v1_account_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -171,7 +242,7 @@ func (x *Payment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Payment.ProtoReflect.Descriptor instead.
 func (*Payment) Descriptor() ([]byte, []int) {
-	return file_v1_account_proto_rawDescGZIP(), []int{0}
+	return file_v1_account_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Payment) GetXId() string {
@@ -274,7 +345,7 @@ type PayrollAction struct {
 func (x *PayrollAction) Reset() {
 	*x = PayrollAction{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_v1_account_proto_msgTypes[1]
+		mi := &file_v1_account_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -287,7 +358,7 @@ func (x *PayrollAction) String() string {
 func (*PayrollAction) ProtoMessage() {}
 
 func (x *PayrollAction) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_account_proto_msgTypes[1]
+	mi := &file_v1_account_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -300,7 +371,7 @@ func (x *PayrollAction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PayrollAction.ProtoReflect.Descriptor instead.
 func (*PayrollAction) Descriptor() ([]byte, []int) {
-	return file_v1_account_proto_rawDescGZIP(), []int{1}
+	return file_v1_account_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *PayrollAction) GetXId() string {
@@ -412,7 +483,7 @@ type Cheque struct {
 func (x *Cheque) Reset() {
 	*x = Cheque{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_v1_account_proto_msgTypes[2]
+		mi := &file_v1_account_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -425,7 +496,7 @@ func (x *Cheque) String() string {
 func (*Cheque) ProtoMessage() {}
 
 func (x *Cheque) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_account_proto_msgTypes[2]
+	mi := &file_v1_account_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -438,7 +509,7 @@ func (x *Cheque) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Cheque.ProtoReflect.Descriptor instead.
 func (*Cheque) Descriptor() ([]byte, []int) {
-	return file_v1_account_proto_rawDescGZIP(), []int{2}
+	return file_v1_account_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Cheque) GetXId() string {
@@ -515,7 +586,7 @@ type Bank struct {
 func (x *Bank) Reset() {
 	*x = Bank{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_v1_account_proto_msgTypes[3]
+		mi := &file_v1_account_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -528,7 +599,7 @@ func (x *Bank) String() string {
 func (*Bank) ProtoMessage() {}
 
 func (x *Bank) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_account_proto_msgTypes[3]
+	mi := &file_v1_account_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -541,7 +612,7 @@ func (x *Bank) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Bank.ProtoReflect.Descriptor instead.
 func (*Bank) Descriptor() ([]byte, []int) {
-	return file_v1_account_proto_rawDescGZIP(), []int{3}
+	return file_v1_account_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Bank) GetXId() string {
@@ -619,7 +690,7 @@ type BankTx struct {
 func (x *BankTx) Reset() {
 	*x = BankTx{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_v1_account_proto_msgTypes[4]
+		mi := &file_v1_account_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -632,7 +703,7 @@ func (x *BankTx) String() string {
 func (*BankTx) ProtoMessage() {}
 
 func (x *BankTx) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_account_proto_msgTypes[4]
+	mi := &file_v1_account_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -645,7 +716,7 @@ func (x *BankTx) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BankTx.ProtoReflect.Descriptor instead.
 func (*BankTx) Descriptor() ([]byte, []int) {
-	return file_v1_account_proto_rawDescGZIP(), []int{4}
+	return file_v1_account_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *BankTx) GetXId() string {
@@ -720,15 +791,15 @@ type Transaction struct {
 	TxType     string `protobuf:"bytes,2,opt,name=tx_type,json=txType,proto3" json:"tx_type,omitempty"`
 	Amount     int64  `protobuf:"varint,3,opt,name=amount,proto3" json:"amount,omitempty"`
 	PaymentId  int64  `protobuf:"varint,4,opt,name=payment_id,json=paymentId,proto3" json:"payment_id,omitempty"`
-	Remark     string `protobuf:"bytes,6,opt,name=remark,proto3" json:"remark,omitempty"`
-	CreatedAt  string `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	CategoryId string `protobuf:"bytes,8,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	Remark     string `protobuf:"bytes,5,opt,name=remark,proto3" json:"remark,omitempty"`
+	CreatedAt  string `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	CategoryId string `protobuf:"bytes,7,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
 }
 
 func (x *Transaction) Reset() {
 	*x = Transaction{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_v1_account_proto_msgTypes[5]
+		mi := &file_v1_account_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -741,7 +812,7 @@ func (x *Transaction) String() string {
 func (*Transaction) ProtoMessage() {}
 
 func (x *Transaction) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_account_proto_msgTypes[5]
+	mi := &file_v1_account_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -754,7 +825,7 @@ func (x *Transaction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Transaction.ProtoReflect.Descriptor instead.
 func (*Transaction) Descriptor() ([]byte, []int) {
-	return file_v1_account_proto_rawDescGZIP(), []int{5}
+	return file_v1_account_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Transaction) GetXId() string {
@@ -810,7 +881,14 @@ var File_v1_account_proto protoreflect.FileDescriptor
 
 var file_v1_account_proto_rawDesc = []byte{
 	0x0a, 0x10, 0x76, 0x31, 0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x12, 0x02, 0x76, 0x31, 0x22, 0xbf, 0x02, 0x0a, 0x07, 0x50, 0x61, 0x79, 0x6d, 0x65,
+	0x74, 0x6f, 0x12, 0x02, 0x76, 0x31, 0x22, 0x6e, 0x0a, 0x0f, 0x50, 0x61, 0x79, 0x6d, 0x65, 0x6e,
+	0x74, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x12, 0x0f, 0x0a, 0x03, 0x5f, 0x69, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69,
+	0x74, 0x6c, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65,
+	0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x74, 0x79, 0x70, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74,
+	0x69, 0x6f, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72,
+	0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0xbf, 0x02, 0x0a, 0x07, 0x50, 0x61, 0x79, 0x6d, 0x65,
 	0x6e, 0x74, 0x12, 0x0f, 0x0a, 0x03, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x02, 0x49, 0x64, 0x12, 0x19, 0x0a, 0x08, 0x70, 0x61, 0x79, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18,
 	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x70, 0x61, 0x79, 0x54, 0x79, 0x70, 0x65, 0x12, 0x17,
@@ -907,11 +985,11 @@ var file_v1_account_proto_rawDesc = []byte{
 	0x6e, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74,
 	0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x04,
 	0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12,
-	0x16, 0x0a, 0x06, 0x72, 0x65, 0x6d, 0x61, 0x72, 0x6b, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x16, 0x0a, 0x06, 0x72, 0x65, 0x6d, 0x61, 0x72, 0x6b, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x06, 0x72, 0x65, 0x6d, 0x61, 0x72, 0x6b, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74,
-	0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x72, 0x65,
+	0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x72, 0x65,
 	0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x1f, 0x0a, 0x0b, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f,
-	0x72, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x63, 0x61, 0x74,
+	0x72, 0x79, 0x5f, 0x69, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x63, 0x61, 0x74,
 	0x65, 0x67, 0x6f, 0x72, 0x79, 0x49, 0x64, 0x2a, 0x25, 0x0a, 0x06, 0x54, 0x78, 0x54, 0x79, 0x70,
 	0x65, 0x12, 0x0a, 0x0a, 0x06, 0x49, 0x4e, 0x43, 0x4f, 0x4d, 0x45, 0x10, 0x00, 0x12, 0x0f, 0x0a,
 	0x0b, 0x45, 0x58, 0x50, 0x45, 0x4e, 0x44, 0x49, 0x54, 0x55, 0x52, 0x45, 0x10, 0x01, 0x2a, 0x7e,
@@ -940,20 +1018,21 @@ func file_v1_account_proto_rawDescGZIP() []byte {
 }
 
 var file_v1_account_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_v1_account_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_v1_account_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_v1_account_proto_goTypes = []interface{}{
-	(TxType)(0),           // 0: v1.TxType
-	(AccountAction)(0),    // 1: v1.AccountAction
-	(*Payment)(nil),       // 2: v1.Payment
-	(*PayrollAction)(nil), // 3: v1.PayrollAction
-	(*Cheque)(nil),        // 4: v1.Cheque
-	(*Bank)(nil),          // 5: v1.Bank
-	(*BankTx)(nil),        // 6: v1.BankTx
-	(*Transaction)(nil),   // 7: v1.Transaction
+	(TxType)(0),             // 0: v1.TxType
+	(AccountAction)(0),      // 1: v1.AccountAction
+	(*PaymentCategory)(nil), // 2: v1.PaymentCategory
+	(*Payment)(nil),         // 3: v1.Payment
+	(*PayrollAction)(nil),   // 4: v1.PayrollAction
+	(*Cheque)(nil),          // 5: v1.Cheque
+	(*Bank)(nil),            // 6: v1.Bank
+	(*BankTx)(nil),          // 7: v1.BankTx
+	(*Transaction)(nil),     // 8: v1.Transaction
 }
 var file_v1_account_proto_depIdxs = []int32{
-	5, // 0: v1.Cheque.bank:type_name -> v1.Bank
-	5, // 1: v1.BankTx.bank:type_name -> v1.Bank
+	6, // 0: v1.Cheque.bank:type_name -> v1.Bank
+	6, // 1: v1.BankTx.bank:type_name -> v1.Bank
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -968,7 +1047,7 @@ func file_v1_account_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_v1_account_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Payment); i {
+			switch v := v.(*PaymentCategory); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -980,7 +1059,7 @@ func file_v1_account_proto_init() {
 			}
 		}
 		file_v1_account_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PayrollAction); i {
+			switch v := v.(*Payment); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -992,7 +1071,7 @@ func file_v1_account_proto_init() {
 			}
 		}
 		file_v1_account_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Cheque); i {
+			switch v := v.(*PayrollAction); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1004,7 +1083,7 @@ func file_v1_account_proto_init() {
 			}
 		}
 		file_v1_account_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Bank); i {
+			switch v := v.(*Cheque); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1016,7 +1095,7 @@ func file_v1_account_proto_init() {
 			}
 		}
 		file_v1_account_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BankTx); i {
+			switch v := v.(*Bank); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1028,6 +1107,18 @@ func file_v1_account_proto_init() {
 			}
 		}
 		file_v1_account_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BankTx); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_v1_account_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Transaction); i {
 			case 0:
 				return &v.state
@@ -1046,7 +1137,7 @@ func file_v1_account_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_v1_account_proto_rawDesc,
 			NumEnums:      2,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

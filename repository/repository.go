@@ -10,6 +10,12 @@ import (
 )
 
 type Repository interface {
+	UpdatePaymentCategory(ctx context.Context, _id primitive.ObjectID, paymentCategory *account.PaymentCategory) (*account.PaymentCategory, error)
+	DeletePaymentCategory(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
+	GetPaymentCategories(ctx context.Context, filterObj *account.PaymentCategory, page *db.Pagination) ([]*account.PaymentCategory, error)
+	CreatePaymentCategory(ctx context.Context, paymentCategory *account.PaymentCategory) (*account.PaymentCategory, error)
+	ConnectPaymentCategory() (*mongo.Client, *mongo.Collection)
+
 	UpdateTransaction(ctx context.Context, _id primitive.ObjectID, transaction *account.Transaction) (*account.Transaction, error)
 	DeleteTransaction(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
 	GetTransactions(ctx context.Context, filterObj *account.Transaction, page *db.Pagination) ([]*account.Transaction, error)
