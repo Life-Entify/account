@@ -3,6 +3,7 @@ package account
 import (
 	"github.com/graphql-go/graphql"
 	payment "github.com/life-entify/account/v1/graph/schemas/payment"
+	transaction "github.com/life-entify/account/v1/graph/schemas/transaction"
 )
 
 func DeletePayment(resolver graphql.FieldResolveFn) *graphql.Field {
@@ -24,6 +25,9 @@ func CreatePayment(resolver graphql.FieldResolveFn) *graphql.Field {
 		Args: graphql.FieldConfigArgument{
 			"payment": &graphql.ArgumentConfig{
 				Type: payment.PaymentInputType,
+			},
+			"transactions": &graphql.ArgumentConfig{
+				Type: graphql.NewList(transaction.TransactionInputType),
 			},
 		},
 		Resolve: resolver,

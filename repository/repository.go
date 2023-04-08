@@ -10,13 +10,12 @@ import (
 )
 
 type Repository interface {
-
 	UpdateTransaction(ctx context.Context, _id primitive.ObjectID, transaction *account.Transaction) (*account.Transaction, error)
 	DeleteTransaction(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
 	GetTransactions(ctx context.Context, filterObj *account.Transaction, page *db.Pagination) ([]*account.Transaction, error)
 	CreateTransaction(ctx context.Context, transaction *account.Transaction) (*account.Transaction, error)
 	ConnectTransaction() (*mongo.Client, *mongo.Collection)
-	
+
 	UpdatePayment(ctx context.Context, _id primitive.ObjectID, payment *account.Payment) (*account.Payment, error)
 	DeletePayment(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
 	GetPayments(ctx context.Context, filterObj *account.Payment, page *db.Pagination) ([]*account.Payment, error)
