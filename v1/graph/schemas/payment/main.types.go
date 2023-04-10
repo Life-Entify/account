@@ -16,7 +16,10 @@ var PaymentType = graphql.NewObject(graphql.ObjectConfig{
 		"tx_type": &graphql.Field{
 			Type: graphql.String,
 		},
-		"action": &graphql.Field{
+		"action_type": &graphql.Field{
+			Type: graphql.String,
+		},
+		"bank_id": &graphql.Field{
 			Type: graphql.String,
 		},
 		"description": &graphql.Field{

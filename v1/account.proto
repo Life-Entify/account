@@ -15,7 +15,7 @@ message Payment {
   string _id = 1;
   string pay_type = 2;
   string tx_type = 3;
-  string action = 4;
+  string action_type = 4;
   string description = 5;
   int64 person_id = 6;
   int64 employee_id = 7;
@@ -23,6 +23,7 @@ message Payment {
   int64 total_amount = 9;
   string created_at = 10;
   string unresolved = 11;
+  string bank_id = 12;
 }
 
 message PayrollAction {
@@ -82,6 +83,7 @@ enum TxType {
 message Transaction {
   string _id = 1;
   string tx_type = 2;
+
   int64 amount = 3;
   int64 payment_id = 4;
   string remark = 5;

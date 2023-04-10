@@ -14,7 +14,7 @@ var TransactionType = graphql.NewObject(graphql.ObjectConfig{
 			Type: graphql.String,
 		},
 		"amount": &graphql.Field{
-			Type: graphql.String,
+			Type: graphql.Int,
 		},
 		"payment_id": &graphql.Field{
 			Type: graphql.String,

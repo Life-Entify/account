@@ -14,7 +14,7 @@ var TransactionInputType = graphql.NewInputObject(graphql.InputObjectConfig{
 			Type: graphql.String,
 		},
 		"amount": &graphql.InputObjectFieldConfig{
-			Type: graphql.String,
+			Type: graphql.Int,
 		},
 		"payment_id": &graphql.InputObjectFieldConfig{
 			Type: graphql.String,
@@ -28,6 +28,5 @@ var TransactionInputType = graphql.NewInputObject(graphql.InputObjectConfig{
 		"category_id": &graphql.InputObjectFieldConfig{
 			Type: graphql.String,
 		},
-		
 	},
 })
