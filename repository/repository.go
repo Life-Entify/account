@@ -19,6 +19,7 @@ type Repository interface {
 	UpdateTransaction(ctx context.Context, _id primitive.ObjectID, transaction *account.Transaction) (*account.Transaction, error)
 	DeleteTransaction(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
 	GetTransactions(ctx context.Context, filterObj *account.Transaction, page *db.Pagination) ([]*account.Transaction, error)
+	GetTransactionsByID(ctx context.Context, _ids []primitive.ObjectID) ([]*account.Transaction, error)
 	CreateTransaction(ctx context.Context, transaction *account.Transaction) (*account.Transaction, error)
 	ConnectTransaction() (*mongo.Client, *mongo.Collection)
 

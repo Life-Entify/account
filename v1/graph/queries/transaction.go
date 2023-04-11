@@ -25,7 +25,7 @@ func GetTransactions(resolver graphql.FieldResolveFn) *graphql.Field {
 }
 func GetTransactionsByID(resolver graphql.FieldResolveFn) *graphql.Field {
 	return &graphql.Field{
-		Description: "Get Transactions with search keyword",
+		Description: "Get Transactions by _ID",
 		Type:        transaction.TransactionType,
 		Args: graphql.FieldConfigArgument{
 			"_ids": &graphql.ArgumentConfig{

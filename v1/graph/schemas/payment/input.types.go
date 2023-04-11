@@ -32,7 +32,7 @@ var PaymentInputType = graphql.NewInputObject(graphql.InputObjectConfig{
 			Type: graphql.Int,
 		},
 		"tx_ids": &graphql.InputObjectFieldConfig{
-			Type: graphql.String,
+			Type: graphql.NewList(graphql.String),
 		},
 		"total_amount": &graphql.InputObjectFieldConfig{
 			Type: graphql.Int,

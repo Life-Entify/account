@@ -32,7 +32,7 @@ var PaymentType = graphql.NewObject(graphql.ObjectConfig{
 			Type: graphql.Int,
 		},
 		"tx_ids": &graphql.Field{
-			Type: graphql.String,
+			Type: graphql.NewList(graphql.String),
 		},
 		"total_amount": &graphql.Field{
 			Type: graphql.Int,

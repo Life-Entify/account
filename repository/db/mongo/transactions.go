@@ -56,6 +56,26 @@ func (db *MongoDB) DeleteTransaction(ctx context.Context, _id primitive.ObjectID
 	}
 	return deleteResult, nil
 }
+func (db *MongoDB) GetTransactionsByID(ctx context.Context, _ids []primitive.ObjectID) ([]*account.Transaction, error) {
+	client, coll := db.ConnectTransaction()
+	defer MongoDisconnect(client)
+	var (
+		transactions    []*account.Transaction
+		jsonTransaction []*bson.M
+	)
+	cursor, err := coll.Find(ctx, bson.D{{Key: "_id", Value: bson.D{{Key: "$in", Value: _ids}}}})
+	if err != nil {
+		return nil, errors.Errorf(err.Error())
+	}
+	defer cursor.Close(ctx)
+	if err := cursor.All(ctx, &jsonTransaction); err != nil {
+		if err != nil {
+			return nil, errors.Errorf(err.Error())
+		}
+	}
+	common.ToJSONStruct(jsonTransaction, &transactions)
+	return transactions, nil
+}
 func (db *MongoDB) GetTransactions(ctx context.Context, filterObj *account.Transaction, page *db.Pagination) ([]*account.Transaction, error) {
 	client, coll := db.ConnectTransaction()
 	defer MongoDisconnect(client)
