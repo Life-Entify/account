@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	BANK_TX_COLLECTION = "bankTx_txs"
+	BANK_TX_COLLECTION = "bank_txs"
 )
 
 func (db *MongoDB) ConnectBankTx() (*mongo.Client, *mongo.Collection) {
@@ -85,7 +85,7 @@ func (db *MongoDB) GetBankTxs(ctx context.Context, filterObj *account.BankTx, pa
 		if filterObj.PaymentType != "" {
 			filterItems = append(filterItems, bson.M{"payment_type": filterObj.PaymentType})
 		}
-		if filterObj.EmployeeId != "" {
+		if filterObj.EmployeeId != 0 {
 			filterItems = append(filterItems, bson.M{"employee_id": filterObj.EmployeeId})
 		}
 		if len(filterItems) > 0 {

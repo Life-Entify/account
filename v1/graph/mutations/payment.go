@@ -44,6 +44,9 @@ func UpdatePayment(resolver graphql.FieldResolveFn) *graphql.Field {
 			"payment": &graphql.ArgumentConfig{
 				Type: payment.PaymentInputType,
 			},
+			"transactions": &graphql.ArgumentConfig{
+				Type: graphql.NewList(transaction.TransactionInputType),
+			},
 		},
 		Resolve: resolver,
 	}

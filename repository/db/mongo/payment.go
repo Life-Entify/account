@@ -115,6 +115,21 @@ func (db *MongoDB) GetPayments(ctx context.Context, filterObj *account.Payment, 
 	common.ToJSONStruct(jsonPayment, &payments)
 	return payments, nil
 }
+func (db *MongoDB) GetPaymentByID(ctx context.Context, _id primitive.ObjectID) (*account.Payment, error) {
+	client, coll := db.ConnectPayment()
+	defer MongoDisconnect(client)
+
+	var (
+		jsonPayment   bson.M
+		resultPayment account.Payment
+	)
+	err := coll.FindOne(ctx, bson.M{"_id": _id}).Decode(&jsonPayment)
+	if err != nil {
+		return nil, errors.Errorf(err.Error())
+	}
+	common.ToJSONStruct(jsonPayment, &resultPayment)
+	return &resultPayment, nil
+}
 func (db *MongoDB) CreatePayment(ctx context.Context, payment *account.Payment) (*account.Payment, error) {
 	client, coll := db.ConnectPayment()
 	defer MongoDisconnect(client)

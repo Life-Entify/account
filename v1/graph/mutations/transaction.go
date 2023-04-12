@@ -10,6 +10,9 @@ func DeleteTransaction(resolver graphql.FieldResolveFn) *graphql.Field {
 		Description: "Delete Transaction",
 		Type:        transaction.TransactionType,
 		Args: graphql.FieldConfigArgument{
+			"payment_id": &graphql.ArgumentConfig{
+				Type: graphql.String,
+			},
 			"_id": &graphql.ArgumentConfig{
 				Type: graphql.String,
 			},

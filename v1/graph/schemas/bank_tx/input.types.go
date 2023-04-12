@@ -25,6 +25,9 @@ var BankTxInputType = graphql.NewInputObject(graphql.InputObjectConfig{
 		"payment_type": &graphql.InputObjectFieldConfig{
 			Type: graphql.String,
 		},
+		"payment_id": &graphql.InputObjectFieldConfig{
+			Type: graphql.String,
+		},
 		"created_at": &graphql.InputObjectFieldConfig{
 			Type: graphql.String,
 		},

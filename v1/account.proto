@@ -24,6 +24,8 @@ message Payment {
   string created_at = 10;
   string unresolved = 11;
   string bank_id = 12;
+  string client = 13;
+  string cheque_id = 14;
 }
 
 message PayrollAction {
@@ -71,9 +73,10 @@ message BankTx {
   string description = 5;
   string payment_type = 6;
   string created_at = 7;
-  string employee_id = 8;
+  int64 employee_id = 8;
+  string payment_id = 9;
 
-  Bank bank = 9;
+  Bank bank = 10;
 }
 enum TxType {
   INCOME = 0;

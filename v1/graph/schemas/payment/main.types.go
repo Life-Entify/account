@@ -22,7 +22,13 @@ var PaymentType = graphql.NewObject(graphql.ObjectConfig{
 		"bank_id": &graphql.Field{
 			Type: graphql.String,
 		},
+		"cheque_id": &graphql.Field{
+			Type: graphql.String,
+		},
 		"description": &graphql.Field{
+			Type: graphql.String,
+		},
+		"client": &graphql.Field{
 			Type: graphql.String,
 		},
 		"person_id": &graphql.Field{
