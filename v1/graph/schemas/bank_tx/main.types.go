@@ -33,7 +33,7 @@ var BankTxType = graphql.NewObject(graphql.ObjectConfig{
 			Type: graphql.String,
 		},
 		"employee_id": &graphql.Field{
-			Type: graphql.String,
+			Type: graphql.Int,
 		},
 		"bank": &graphql.Field{
 			Type: account.BankType,

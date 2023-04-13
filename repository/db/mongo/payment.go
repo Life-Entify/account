@@ -79,6 +79,9 @@ func (db *MongoDB) GetPayments(ctx context.Context, filterObj *account.Payment, 
 			filterItems = append(filterItems, bson.M{"_id": id})
 		}
 
+		if filterObj.BankId != "" {
+			filterItems = append(filterItems, bson.M{"bank_id": filterObj.BankId})
+		}
 		if filterObj.PersonId != 0 {
 			filterItems = append(filterItems, bson.M{"person_id": filterObj.PersonId})
 		}
