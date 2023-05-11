@@ -8,7 +8,7 @@ func GetPersonDepositBalance(resolver graphql.FieldResolveFn) *graphql.Field {
 	return &graphql.Field{
 		Description: "Get user deposit balance",
 		Type: graphql.NewObject(graphql.ObjectConfig{
-			Name: "PaymentType",
+			Name: "PersonDepositBalance",
 			Fields: graphql.Fields{
 				"deposit": &graphql.Field{
 					Type: graphql.Int,
@@ -22,7 +22,7 @@ func GetPersonDepositBalance(resolver graphql.FieldResolveFn) *graphql.Field {
 			},
 		}),
 		Args: graphql.FieldConfigArgument{
-			"personId": &graphql.ArgumentConfig{
+			"person_id": &graphql.ArgumentConfig{
 				Type: graphql.Int,
 			},
 		},
