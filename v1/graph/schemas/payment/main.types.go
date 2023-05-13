@@ -4,6 +4,43 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
+var PaySummaryByEmployeeType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "PaySummaryByEmployeeType",
+	Fields: graphql.Fields{
+		"action_types": &graphql.Field{
+			Type: graphql.NewList(graphql.NewObject(graphql.ObjectConfig{
+				Name: "PayActionTypesType",
+				Fields: graphql.Fields{
+					"action_type": &graphql.Field{
+						Type: graphql.String,
+					},
+					"total_amount": &graphql.Field{
+						Type: graphql.Int,
+					},
+				},
+			})),
+		},
+		"pay_types": &graphql.Field{
+			Type: graphql.NewList(graphql.NewObject(graphql.ObjectConfig{
+				Name: "PayTypesType",
+				Fields: graphql.Fields{
+					"pay_type": &graphql.Field{
+						Type: graphql.String,
+					},
+					"tx_type": &graphql.Field{
+						Type: graphql.String,
+					},
+					"total_amount": &graphql.Field{
+						Type: graphql.Int,
+					},
+				},
+			})),
+		},
+		"employee_id": &graphql.Field{
+			Type: graphql.Int,
+		},
+	},
+})
 var PaymentType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "PaymentType",
 	Fields: graphql.Fields{

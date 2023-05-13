@@ -6,7 +6,7 @@ import (
 
 	common "github.com/life-entify/account/common"
 	errors "github.com/life-entify/account/errors"
-	db "github.com/life-entify/account/repository/db"
+	repo_db "github.com/life-entify/account/repository/db"
 	"github.com/life-entify/account/v1"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -56,7 +56,121 @@ func (db *MongoDB) DeletePayment(ctx context.Context, _id primitive.ObjectID) (*
 	}
 	return deleteResult, nil
 }
-func (db *MongoDB) GetPayments(ctx context.Context, filterObj *account.Payment, page *db.Pagination) ([]*account.Payment, error) {
+func paymentFilter(paymentFilter *account.Payment) (bson.M, error) {
+	var filter = bson.M{}
+	if !reflect.ValueOf(paymentFilter).IsZero() {
+		filterItems := []bson.M{}
+		if paymentFilter.XId != "" {
+			id, err := primitive.ObjectIDFromHex(paymentFilter.XId)
+			if err != nil {
+				return nil, errors.Errorf(err.Error())
+			}
+			filterItems = append(filterItems, bson.M{"_id": id})
+		}
+
+		if paymentFilter.BankId != "" {
+			filterItems = append(filterItems, bson.M{"bank_id": paymentFilter.BankId})
+		}
+		if paymentFilter.PersonId != 0 {
+			filterItems = append(filterItems, bson.M{"person_id": paymentFilter.PersonId})
+		}
+		if paymentFilter.ActionType != "" {
+			filterItems = append(filterItems, bson.M{"action_type": paymentFilter.ActionType})
+		}
+		if paymentFilter.PayType != "" {
+			filterItems = append(filterItems, bson.M{"pay_type": paymentFilter.PayType})
+		}
+		if paymentFilter.TxType != "" {
+			filterItems = append(filterItems, bson.M{"tx_type": paymentFilter.TxType})
+		}
+		if paymentFilter.Unresolved != "" {
+			filterItems = append(filterItems, bson.M{"unresolved": paymentFilter.Unresolved})
+		}
+		if paymentFilter.EmployeeId != 0 {
+			filterItems = append(filterItems, bson.M{"employee_id": paymentFilter.EmployeeId})
+		}
+		if len(filterItems) > 0 {
+			filter["$or"] = filterItems
+		}
+	}
+	return filter, nil
+}
+func (db *MongoDB) GetPaymentByEmpIdAndPayType(ctx context.Context, filterObj *account.Payment) ([]*repo_db.PaymentTypeSummary, error) {
+	client, coll := db.ConnectPayment()
+	defer MongoDisconnect(client)
+	filter, _ := paymentFilter(filterObj)
+	// Set up pipeline
+	pipeline := mongo.Pipeline{
+		{{Key: "$match", Value: filter}},
+		{{Key: "$group", Value: bson.M{
+			"_id": bson.D{
+				{Key: "employee_id", Value: "$employee_id"},
+				{Key: "pay_type", Value: "$pay_type"},
+				{Key: "tx_type", Value: "$tx_type"},
+			},
+			"total_amount": bson.M{"$sum": "$total_amount"},
+		}}},
+	}
+	cursor, err := coll.Aggregate(ctx, pipeline)
+	if err != nil {
+		return nil, errors.Errorf(err.Error())
+	}
+	defer cursor.Close(context.Background())
+	var (
+		results    []*repo_db.PaymentTypeSummary
+		jsonResult []*bson.M
+	)
+	if err = cursor.All(context.Background(), &jsonResult); err != nil {
+		return nil, errors.Errorf(err.Error())
+	}
+
+	common.ToJSONStruct(jsonResult, &results)
+	return results, nil
+}
+func (db *MongoDB) GetPaymentByEmpIdAndActionType(ctx context.Context, filterObj *account.Payment) ([]*repo_db.PaymentActionTypeSummary, error) {
+	client, coll := db.ConnectPayment()
+	defer MongoDisconnect(client)
+	filter, _ := paymentFilter(filterObj)
+	// Set up pipeline
+	pipeline := mongo.Pipeline{
+		{{Key: "$match", Value: filter}},
+		{{Key: "$group", Value: bson.M{
+			"_id": bson.D{
+				{Key: "employee_id", Value: "$employee_id"},
+				{Key: "action_type", Value: "$action_type"},
+			},
+			"total_amount": bson.M{"$sum": "$total_amount"},
+		}}},
+	}
+	cursor, err := coll.Aggregate(ctx, pipeline)
+	if err != nil {
+		return nil, errors.Errorf(err.Error())
+	}
+	defer cursor.Close(context.Background())
+	var (
+		results    []*repo_db.PaymentActionTypeSummary
+		jsonResult []*bson.M
+	)
+	if err = cursor.All(context.Background(), &jsonResult); err != nil {
+		return nil, errors.Errorf(err.Error())
+	}
+
+	common.ToJSONStruct(jsonResult, &results)
+	return results, nil
+}
+func (db *MongoDB) GetPaymentEmployeeIds(ctx context.Context, filterObj *account.Payment) ([]int64, error) {
+	client, coll := db.ConnectPayment()
+	defer MongoDisconnect(client)
+	filter, _ := paymentFilter(filterObj)
+	result, err := coll.Distinct(ctx, "employee_id", filter)
+	if err != nil {
+		return nil, errors.Errorf(err.Error())
+	}
+	var employeeIds []int64
+	common.ToJSONStruct(result, &employeeIds)
+	return employeeIds, nil
+}
+func (db *MongoDB) GetPayments(ctx context.Context, filterObj *account.Payment, page *repo_db.Pagination) ([]*account.Payment, error) {
 	client, coll := db.ConnectPayment()
 	defer MongoDisconnect(client)
 	option := options.Find().SetSort(bson.D{{Key: "_id", Value: 1}})
@@ -68,42 +182,7 @@ func (db *MongoDB) GetPayments(ctx context.Context, filterObj *account.Payment, 
 			option.SetLimit(page.Limit)
 		}
 	}
-	var filter = bson.M{}
-	if !reflect.ValueOf(filterObj).IsZero() {
-		filterItems := []bson.M{}
-		if filterObj.XId != "" {
-			id, err := primitive.ObjectIDFromHex(filterObj.XId)
-			if err != nil {
-				return nil, nil
-			}
-			filterItems = append(filterItems, bson.M{"_id": id})
-		}
-
-		if filterObj.BankId != "" {
-			filterItems = append(filterItems, bson.M{"bank_id": filterObj.BankId})
-		}
-		if filterObj.PersonId != 0 {
-			filterItems = append(filterItems, bson.M{"person_id": filterObj.PersonId})
-		}
-		if filterObj.ActionType != "" {
-			filterItems = append(filterItems, bson.M{"action_type": filterObj.ActionType})
-		}
-		if filterObj.PayType != "" {
-			filterItems = append(filterItems, bson.M{"pay_type": filterObj.PayType})
-		}
-		if filterObj.TxType != "" {
-			filterItems = append(filterItems, bson.M{"tx_type": filterObj.TxType})
-		}
-		if filterObj.Unresolved != "" {
-			filterItems = append(filterItems, bson.M{"unresolved": filterObj.Unresolved})
-		}
-		if filterObj.EmployeeId != 0 {
-			filterItems = append(filterItems, bson.M{"employee_id": filterObj.EmployeeId})
-		}
-		if len(filterItems) > 0 {
-			filter["$or"] = filterItems
-		}
-	}
+	filter, _ := paymentFilter(filterObj)
 	var (
 		payments    []*account.Payment
 		jsonPayment []*bson.M

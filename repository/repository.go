@@ -10,6 +10,10 @@ import (
 )
 
 type Repository interface {
+	GetPaymentByEmpIdAndActionType(ctx context.Context, filterObj *account.Payment) ([]*db.PaymentActionTypeSummary, error)
+	GetPaymentByEmpIdAndPayType(ctx context.Context, filterObj *account.Payment) ([]*db.PaymentTypeSummary, error)
+	GetPaymentEmployeeIds(ctx context.Context, filterObj *account.Payment) ([]int64, error)
+
 	UpdatePaymentCategory(ctx context.Context, _id primitive.ObjectID, paymentCategory *account.PaymentCategory) (*account.PaymentCategory, error)
 	DeletePaymentCategory(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
 	GetPaymentCategories(ctx context.Context, filterObj *account.PaymentCategory, page *db.Pagination) ([]*account.PaymentCategory, error)
