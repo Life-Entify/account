@@ -103,12 +103,16 @@ func paymentDateFilter(dateFilter *repo_db.DateFilter) ([]bson.D, error) {
 		if maxInt == 0 {
 			maxInt = minInt
 		}
+		filter := bson.D{{Key: "$gte", Value: minInt}}
+		if minInt != 0 {
+			filter = append(filter, bson.E{Key: "$lte", Value: maxInt})
+		}
 		return []bson.D{
 			{{Key: "$addFields", Value: bson.D{{Key: "createdAtInt", Value: bson.D{{Key: "$toLong", Value: "$created_at"}}}}}},
 			{{Key: "$match",
 				Value: bson.D{{
 					Key:   "createdAtInt",
-					Value: bson.D{{Key: "$gte", Value: minInt}, {Key: "$lte", Value: maxInt}},
+					Value: filter,
 				}},
 			}},
 		}, nil
