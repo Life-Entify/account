@@ -3,7 +3,6 @@ package account
 import (
 	"github.com/graphql-go/graphql"
 	payment "github.com/life-entify/account/v1/graph/schemas/payment"
-	emp_schemas "github.com/life-entify/employee/v1/graph/schemas/employee"
 )
 
 func GetPaymentsByEmpAndActionType(resolver graphql.FieldResolveFn) *graphql.Field {
@@ -14,17 +13,8 @@ func GetPaymentsByEmpAndActionType(resolver graphql.FieldResolveFn) *graphql.Fie
 			"filter": &graphql.ArgumentConfig{
 				Type: payment.PaymentInputType,
 			},
-		},
-		Resolve: resolver,
-	}
-}
-func GetPaymentEmployeeIds(resolver graphql.FieldResolveFn) *graphql.Field {
-	return &graphql.Field{
-		Description: "Get Distinct Employee Ids for payments",
-		Type:        graphql.NewList(emp_schemas.EmployeeType),
-		Args: graphql.FieldConfigArgument{
-			"filter": &graphql.ArgumentConfig{
-				Type: payment.PaymentInputType,
+			"date_filter": &graphql.ArgumentConfig{
+				Type: payment.DateStampInputType,
 			},
 		},
 		Resolve: resolver,

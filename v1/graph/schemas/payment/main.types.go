@@ -2,6 +2,7 @@ package account
 
 import (
 	"github.com/graphql-go/graphql"
+	emp_db "github.com/life-entify/employee/v1/graph/schemas/employee"
 )
 
 var PaySummaryByEmployeeType = graphql.NewObject(graphql.ObjectConfig{
@@ -36,8 +37,8 @@ var PaySummaryByEmployeeType = graphql.NewObject(graphql.ObjectConfig{
 				},
 			})),
 		},
-		"employee_id": &graphql.Field{
-			Type: graphql.Int,
+		"employee": &graphql.Field{
+			Type: emp_db.EmployeeType,
 		},
 	},
 })

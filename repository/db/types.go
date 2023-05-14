@@ -1,7 +1,13 @@
 package account
 
+import "github.com/life-entify/employee/v1"
+
 type Pagination struct {
 	Limit, Skip int64
+}
+type DateFilter struct {
+	DateStampFrom uint64 `json:"date_stamp_from"`
+	DateStampTo   uint64 `json:"date_stamp_to"`
 }
 type PaymentActionTypeSummary struct {
 	XId struct {
@@ -28,7 +34,7 @@ type EmpPayActionTypeTotal struct {
 	TotalAmount int    `json:"total_amount"`
 }
 type PaySummaryByEmployee struct {
-	EmployeeId  int64                    `json:"employee_id"`
+	Employee    *employee.Employee       `json:"employee"`
 	PayTypes    []*EmpPayTypeTotal       `json:"pay_types"`
 	ActionTypes []*EmpPayActionTypeTotal `json:"action_types"`
 }

@@ -2,6 +2,7 @@ package account
 
 import (
 	"context"
+	"fmt"
 	"reflect"
 
 	common "github.com/life-entify/account/common"
@@ -95,22 +96,48 @@ func paymentFilter(paymentFilter *account.Payment) (bson.M, error) {
 	}
 	return filter, nil
 }
-func (db *MongoDB) GetPaymentByEmpIdAndPayType(ctx context.Context, filterObj *account.Payment) ([]*repo_db.PaymentTypeSummary, error) {
+func paymentDateFilter(dateFilter *repo_db.DateFilter) ([]bson.D, error) {
+	if dateFilter != nil {
+		minInt := dateFilter.DateStampFrom
+		maxInt := dateFilter.DateStampTo
+		if maxInt == 0 {
+			maxInt = minInt
+		}
+		return []bson.D{
+			{{Key: "$addFields", Value: bson.D{{Key: "createdAtInt", Value: bson.D{{Key: "$toLong", Value: "$created_at"}}}}}},
+			{{Key: "$match",
+				Value: bson.D{{
+					Key:   "createdAtInt",
+					Value: bson.D{{Key: "$gte", Value: minInt}, {Key: "$lte", Value: maxInt}},
+				}},
+			}},
+		}, nil
+	}
+	return nil, fmt.Errorf("dateFilter can not be nil if used")
+}
+func (db *MongoDB) GetPaymentByEmpIdAndPayType(ctx context.Context, filterObj *account.Payment, dateFilter *repo_db.DateFilter) ([]*repo_db.PaymentTypeSummary, error) {
 	client, coll := db.ConnectPayment()
 	defer MongoDisconnect(client)
 	filter, _ := paymentFilter(filterObj)
 	// Set up pipeline
 	pipeline := mongo.Pipeline{
 		{{Key: "$match", Value: filter}},
-		{{Key: "$group", Value: bson.M{
-			"_id": bson.D{
-				{Key: "employee_id", Value: "$employee_id"},
-				{Key: "pay_type", Value: "$pay_type"},
-				{Key: "tx_type", Value: "$tx_type"},
-			},
-			"total_amount": bson.M{"$sum": "$total_amount"},
-		}}},
 	}
+	if dateFilter != nil {
+		dateMatch, err := paymentDateFilter(dateFilter)
+		if err != nil {
+			return nil, errors.Errorf(err.Error())
+		}
+		pipeline = append(pipeline, dateMatch...)
+	}
+	pipeline = append(pipeline, bson.D{{Key: "$group", Value: bson.M{
+		"_id": bson.D{
+			{Key: "employee_id", Value: "$employee_id"},
+			{Key: "pay_type", Value: "$pay_type"},
+			{Key: "tx_type", Value: "$tx_type"},
+		},
+		"total_amount": bson.M{"$sum": "$total_amount"},
+	}}})
 	cursor, err := coll.Aggregate(ctx, pipeline)
 	if err != nil {
 		return nil, errors.Errorf(err.Error())
@@ -127,21 +154,28 @@ func (db *MongoDB) GetPaymentByEmpIdAndPayType(ctx context.Context, filterObj *a
 	common.ToJSONStruct(jsonResult, &results)
 	return results, nil
 }
-func (db *MongoDB) GetPaymentByEmpIdAndActionType(ctx context.Context, filterObj *account.Payment) ([]*repo_db.PaymentActionTypeSummary, error) {
+func (db *MongoDB) GetPaymentByEmpIdAndActionType(ctx context.Context, filterObj *account.Payment, dateFilter *repo_db.DateFilter) ([]*repo_db.PaymentActionTypeSummary, error) {
 	client, coll := db.ConnectPayment()
 	defer MongoDisconnect(client)
 	filter, _ := paymentFilter(filterObj)
 	// Set up pipeline
 	pipeline := mongo.Pipeline{
 		{{Key: "$match", Value: filter}},
-		{{Key: "$group", Value: bson.M{
-			"_id": bson.D{
-				{Key: "employee_id", Value: "$employee_id"},
-				{Key: "action_type", Value: "$action_type"},
-			},
-			"total_amount": bson.M{"$sum": "$total_amount"},
-		}}},
 	}
+	if dateFilter != nil {
+		dateMatch, err := paymentDateFilter(dateFilter)
+		if err != nil {
+			return nil, errors.Errorf(err.Error())
+		}
+		pipeline = append(pipeline, dateMatch...)
+	}
+	pipeline = append(pipeline, bson.D{{Key: "$group", Value: bson.M{
+		"_id": bson.D{
+			{Key: "employee_id", Value: "$employee_id"},
+			{Key: "action_type", Value: "$action_type"},
+		},
+		"total_amount": bson.M{"$sum": "$total_amount"},
+	}}})
 	cursor, err := coll.Aggregate(ctx, pipeline)
 	if err != nil {
 		return nil, errors.Errorf(err.Error())

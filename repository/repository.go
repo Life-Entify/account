@@ -10,8 +10,8 @@ import (
 )
 
 type Repository interface {
-	GetPaymentByEmpIdAndActionType(ctx context.Context, filterObj *account.Payment) ([]*db.PaymentActionTypeSummary, error)
-	GetPaymentByEmpIdAndPayType(ctx context.Context, filterObj *account.Payment) ([]*db.PaymentTypeSummary, error)
+	GetPaymentByEmpIdAndActionType(ctx context.Context, filterObj *account.Payment, dateFilter *db.DateFilter) ([]*db.PaymentActionTypeSummary, error)
+	GetPaymentByEmpIdAndPayType(ctx context.Context, filterObj *account.Payment, dateFilter *db.DateFilter) ([]*db.PaymentTypeSummary, error)
 	GetPaymentEmployeeIds(ctx context.Context, filterObj *account.Payment) ([]int64, error)
 
 	UpdatePaymentCategory(ctx context.Context, _id primitive.ObjectID, paymentCategory *account.PaymentCategory) (*account.PaymentCategory, error)

@@ -4,6 +4,17 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
+var DateStampInputType = graphql.NewInputObject(graphql.InputObjectConfig{
+	Name: "DateStampInputType",
+	Fields: graphql.InputObjectConfigFieldMap{
+		"date_stamp_from": &graphql.InputObjectFieldConfig{
+			Type: graphql.Int,
+		},
+		"date_stamp_to": &graphql.InputObjectFieldConfig{
+			Type: graphql.Int,
+		},
+	},
+})
 var PaymentInputType = graphql.NewInputObject(graphql.InputObjectConfig{
 	Name: "PaymentInputType",
 	Fields: graphql.InputObjectConfigFieldMap{
