@@ -6,8 +6,8 @@ type Pagination struct {
 	Limit, Skip int64
 }
 type DateFilter struct {
-	DateStampFrom uint64 `json:"date_stamp_from"`
-	DateStampTo   uint64 `json:"date_stamp_to"`
+	DateStampFrom string `json:"date_stamp_from"`
+	DateStampTo   string `json:"date_stamp_to"`
 }
 type PaymentActionTypeSummary struct {
 	XId struct {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strconv"
 
 	common "github.com/life-entify/account/common"
 	errors "github.com/life-entify/account/errors"
@@ -98,8 +99,8 @@ func paymentFilter(paymentFilter *account.Payment) (bson.M, error) {
 }
 func paymentDateFilter(dateFilter *repo_db.DateFilter) ([]bson.D, error) {
 	if dateFilter != nil {
-		minInt := dateFilter.DateStampFrom
-		maxInt := dateFilter.DateStampTo
+		minInt, _ := strconv.Atoi(dateFilter.DateStampFrom)
+		maxInt, _ := strconv.Atoi(dateFilter.DateStampTo)
 		if maxInt == 0 {
 			maxInt = minInt
 		}

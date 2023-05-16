@@ -8,10 +8,10 @@ var DateStampInputType = graphql.NewInputObject(graphql.InputObjectConfig{
 	Name: "DateStampInputType",
 	Fields: graphql.InputObjectConfigFieldMap{
 		"date_stamp_from": &graphql.InputObjectFieldConfig{
-			Type: graphql.Int,
+			Type: graphql.String,
 		},
 		"date_stamp_to": &graphql.InputObjectFieldConfig{
-			Type: graphql.Int,
+			Type: graphql.String,
 		},
 	},
 })
