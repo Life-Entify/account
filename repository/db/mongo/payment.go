@@ -159,6 +159,44 @@ func (db *MongoDB) GetPaymentByEmpIdAndPayType(ctx context.Context, filterObj *a
 	common.ToJSONStruct(jsonResult, &results)
 	return results, nil
 }
+func (db *MongoDB) GetPaymentByPersonIdAndActionType(ctx context.Context, filterObj *account.Payment, dateFilter *repo_db.DateFilter) ([]*repo_db.PaymentActionTypeSummary, error) {
+	client, coll := db.ConnectPayment()
+	defer MongoDisconnect(client)
+	filter, _ := paymentFilter(filterObj)
+	// Set up pipeline
+	pipeline := mongo.Pipeline{
+		{{Key: "$match", Value: filter}},
+	}
+	if dateFilter != nil {
+		dateMatch, err := paymentDateFilter(dateFilter)
+		if err != nil {
+			return nil, errors.Errorf(err.Error())
+		}
+		pipeline = append(pipeline, dateMatch...)
+	}
+	pipeline = append(pipeline, bson.D{{Key: "$group", Value: bson.M{
+		"_id": bson.D{
+			{Key: "person_id", Value: "$person_id"},
+			{Key: "action_type", Value: "$action_type"},
+		},
+		"total_amount": bson.M{"$sum": "$total_amount"},
+	}}})
+	cursor, err := coll.Aggregate(ctx, pipeline)
+	if err != nil {
+		return nil, errors.Errorf(err.Error())
+	}
+	defer cursor.Close(context.Background())
+	var (
+		results    []*repo_db.PaymentActionTypeSummary
+		jsonResult []*bson.M
+	)
+	if err = cursor.All(context.Background(), &jsonResult); err != nil {
+		return nil, errors.Errorf(err.Error())
+	}
+
+	common.ToJSONStruct(jsonResult, &results)
+	return results, nil
+}
 func (db *MongoDB) GetPaymentByEmpIdAndActionType(ctx context.Context, filterObj *account.Payment, dateFilter *repo_db.DateFilter) ([]*repo_db.PaymentActionTypeSummary, error) {
 	client, coll := db.ConnectPayment()
 	defer MongoDisconnect(client)
