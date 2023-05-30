@@ -28,6 +28,9 @@ func GetPayments(resolver graphql.FieldResolveFn) *graphql.Field {
 			"keyword": &graphql.ArgumentConfig{
 				Type: payment.PaymentInputType,
 			},
+			"date_filter": &graphql.ArgumentConfig{
+				Type: payment.DateStampInputType,
+			},
 			"limit": &graphql.ArgumentConfig{
 				Type: graphql.Int,
 			},

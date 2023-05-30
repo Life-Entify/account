@@ -209,24 +209,42 @@ func (db *MongoDB) GetPaymentEmployeeIds(ctx context.Context, filterObj *account
 	common.ToJSONStruct(result, &employeeIds)
 	return employeeIds, nil
 }
-func (db *MongoDB) GetPayments(ctx context.Context, filterObj *account.Payment, page *repo_db.Pagination) ([]*account.Payment, error) {
+func (db *MongoDB) GetPayments(ctx context.Context, filterObj *account.Payment, dateFilter *repo_db.DateFilter, page *repo_db.Pagination) ([]*account.Payment, error) {
 	client, coll := db.ConnectPayment()
 	defer MongoDisconnect(client)
-	option := options.Find().SetSort(bson.D{{Key: "_id", Value: 1}})
+	pipeline := mongo.Pipeline{
+		{{Key: "$sort", Value: bson.D{{Key: "_id", Value: -1}}}},
+	}
 	if !reflect.ValueOf(page).IsZero() {
 		if page.Skip != 0 {
-			option.SetSkip(page.Skip)
+			pipeline = append(pipeline, bson.D{{
+				Key: "$skip", Value: page.Skip,
+			}})
 		}
 		if page.Limit != 0 {
-			option.SetLimit(page.Limit)
+			pipeline = append(pipeline, bson.D{{
+				Key: "$limit", Value: page.Limit,
+			}})
 		}
 	}
 	filter, _ := paymentFilter(filterObj)
+	if filter != nil {
+		pipeline = append(pipeline, bson.D{{
+			Key: "$match", Value: filter,
+		}})
+	}
+	if dateFilter != nil {
+		dateMatch, err := paymentDateFilter(dateFilter)
+		if err != nil {
+			return nil, errors.Errorf(err.Error())
+		}
+		pipeline = append(pipeline, dateMatch...)
+	}
 	var (
 		payments    []*account.Payment
 		jsonPayment []*bson.M
 	)
-	cursor, err := coll.Find(ctx, filter, option)
+	cursor, err := coll.Aggregate(ctx, pipeline)
 	if err != nil {
 		return nil, errors.Errorf(err.Error())
 	}

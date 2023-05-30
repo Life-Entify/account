@@ -30,7 +30,8 @@ type Repository interface {
 	UpdatePayment(ctx context.Context, _id primitive.ObjectID, payment *account.Payment) (*account.Payment, error)
 	DeletePayment(ctx context.Context, _id primitive.ObjectID) (*mongo.DeleteResult, error)
 	GetPaymentByID(ctx context.Context, _id primitive.ObjectID) (*account.Payment, error)
-	GetPayments(ctx context.Context, filterObj *account.Payment, page *db.Pagination) ([]*account.Payment, error)
+
+	GetPayments(ctx context.Context, filterObj *account.Payment, dateFilter *db.DateFilter, page *db.Pagination) ([]*account.Payment, error)
 	CreatePayment(ctx context.Context, payment *account.Payment) (*account.Payment, error)
 	ConnectPayment() (*mongo.Client, *mongo.Collection)
 
