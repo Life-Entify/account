@@ -9,6 +9,13 @@ type DateFilter struct {
 	DateStampFrom string `json:"date_stamp_from"`
 	DateStampTo   string `json:"date_stamp_to"`
 }
+type DepositSummary struct {
+	XId struct {
+		PersonId   int    `json:"person_id"`
+		ActionType string `json:"action_type"`
+	} `json:"_id"`
+	TotalAmount int `json:"total_amount"`
+}
 type PaymentActionTypeSummary struct {
 	XId struct {
 		EmployeeId int    `json:"employee_id"`

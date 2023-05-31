@@ -3,8 +3,40 @@ package account
 import (
 	"github.com/graphql-go/graphql"
 	emp_db "github.com/life-entify/employee/v1/graph/schemas/employee"
+	person "github.com/life-entify/person/v1/graph/schemas"
 )
 
+var DepositAmountByPersons = graphql.NewObject(graphql.ObjectConfig{
+	Name: "DepositAmountByPersons",
+	Fields: graphql.Fields{
+		"deposit_info": &graphql.Field{
+			Type: graphql.NewList(graphql.NewObject(graphql.ObjectConfig{
+				Name: "PersonDepositAmount",
+				Fields: graphql.Fields{
+					"total_amount": &graphql.Field{
+						Type: graphql.Int,
+					},
+					"_id": &graphql.Field{
+						Type: graphql.NewObject(graphql.ObjectConfig{
+							Name: "XID",
+							Fields: graphql.Fields{
+								"action_type": &graphql.Field{
+									Type: graphql.String,
+								},
+								"person_id": &graphql.Field{
+									Type: graphql.Int,
+								},
+							},
+						}),
+					},
+				},
+			})),
+		},
+		"persons": &graphql.Field{
+			Type: graphql.NewList(person.PersonType),
+		},
+	},
+})
 var PaySummaryByEmployeeType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "PaySummaryByEmployeeType",
 	Fields: graphql.Fields{
@@ -42,6 +74,7 @@ var PaySummaryByEmployeeType = graphql.NewObject(graphql.ObjectConfig{
 		},
 	},
 })
+
 var PaymentType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "PaymentType",
 	Fields: graphql.Fields{
