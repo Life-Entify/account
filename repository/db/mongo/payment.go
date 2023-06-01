@@ -126,7 +126,7 @@ func (db *MongoDB) GetDepositByPersonGroup(ctx context.Context, page *repo_db.Pa
 	pipeline := mongo.Pipeline{
 		{{Key: "$match", Value: bson.D{{
 			Key: "action_type", Value: bson.D{{
-				Key: "$in", Value: []string{"received_deposit", "use_deposit", "deposit_withdrawal"}}},
+				Key: "$in", Value: []string{"receive_deposit", "use_deposit", "deposit_withdrawal"}}},
 		}}}},
 	}
 	if !reflect.ValueOf(page).IsZero() {
