@@ -16,9 +16,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const (
-	PAYMENT_COLLECTION = "payments"
-)
+const PAYMENT_COLLECTION = "payments"
+
+var DEPOSIT_ITEMS = []string{"receive_deposit", "use_deposit", "deposit_withdrawal"}
 
 func (db *MongoDB) ConnectPayment() (*mongo.Client, *mongo.Collection) {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(db.uri))
@@ -120,26 +120,39 @@ func paymentDateFilter(dateFilter *repo_db.DateFilter) ([]bson.D, error) {
 	}
 	return nil, fmt.Errorf("dateFilter can not be nil if used")
 }
-func (db *MongoDB) GetDepositByPersonGroup(ctx context.Context, page *repo_db.Pagination) ([]*repo_db.DepositSummary, error) {
+func (db *MongoDB) GetDistinctDepositor(ctx context.Context, page *repo_db.Pagination) ([]int64, error) {
+	client, coll := db.ConnectPayment()
+	defer MongoDisconnect(client)
+	filter := bson.M{"action_type": bson.M{"$in": DEPOSIT_ITEMS}}
+	result, err := coll.Distinct(ctx, "person_id", filter)
+	if err != nil {
+		return nil, errors.Errorf(err.Error())
+	}
+	var person_ids []int64
+	common.ToJSONStruct(result, &person_ids)
+	if !reflect.ValueOf(page).IsZero() {
+		if page.Skip != 0 && int64(len(person_ids)) > page.Skip {
+			person_ids = person_ids[page.Skip:]
+		}
+		if page.Limit != 0 && int64(len(person_ids)) > page.Limit {
+			person_ids = person_ids[:page.Limit]
+		}
+	}
+	return person_ids[page.Skip:], nil
+}
+func (db *MongoDB) GetDepositDetailsByPersonIds(ctx context.Context, person_ids []int64) ([]*repo_db.DepositSummary, error) {
 	client, coll := db.ConnectPayment()
 	defer MongoDisconnect(client)
 	pipeline := mongo.Pipeline{
-		{{Key: "$match", Value: bson.D{{
-			Key: "action_type", Value: bson.D{{
-				Key: "$in", Value: []string{"receive_deposit", "use_deposit", "deposit_withdrawal"}}},
-		}}}},
-	}
-	if !reflect.ValueOf(page).IsZero() {
-		if page.Skip != 0 {
-			pipeline = append(pipeline, bson.D{{
-				Key: "$skip", Value: page.Skip,
-			}})
-		}
-		if page.Limit != 0 {
-			pipeline = append(pipeline, bson.D{{
-				Key: "$limit", Value: page.Limit,
-			}})
-		}
+		{{Key: "$match", Value: bson.D{
+			{
+				Key: "action_type", Value: bson.D{{
+					Key: "$in", Value: DEPOSIT_ITEMS}},
+			}, {
+				Key: "person_id", Value: bson.D{{
+					Key: "$in", Value: person_ids,
+				}},
+			}}}},
 	}
 	pipeline = append(pipeline, bson.D{{Key: "$group", Value: bson.M{
 		"_id": bson.D{

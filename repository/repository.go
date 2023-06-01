@@ -10,7 +10,8 @@ import (
 )
 
 type Repository interface {
-	GetDepositByPersonGroup(ctx context.Context, page *db.Pagination) ([]*db.DepositSummary, error)
+	GetDistinctDepositor(ctx context.Context, page *db.Pagination) ([]int64, error)
+	GetDepositDetailsByPersonIds(ctx context.Context, person_ids []int64) ([]*db.DepositSummary, error)
 
 	GetPaymentByEmpIdAndActionType(ctx context.Context, filterObj *account.Payment, dateFilter *db.DateFilter) ([]*db.PaymentActionTypeSummary, error)
 	GetPaymentByEmpIdAndPayType(ctx context.Context, filterObj *account.Payment, dateFilter *db.DateFilter) ([]*db.PaymentTypeSummary, error)
